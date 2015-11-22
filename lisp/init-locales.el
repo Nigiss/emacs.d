@@ -18,7 +18,8 @@
   (prefer-coding-system 'utf-8))
 
 ;; My configurations
-;; Golbal
+
+;; Golbal key bindings
 (global-set-key (kbd "C-M-/") 'undo-tree-redo)
 (global-set-key (kbd "M-?") 'comment-or-uncomment-region-or-line)
 (global-set-key (kbd "C-M-j") 'next-line-beginning-and-newline-and-indent)
@@ -26,7 +27,9 @@
 (global-set-key (kbd "C-a") 'back-to-indentation-or-beginning)
 (global-set-key (kbd "M-'") 'rgrep)
 
+;; Global settings
 (window-numbering-mode 1)
+(menu-bar-mode nil)
 
 :; General
 (defun comment-or-uncomment-region-or-line ()

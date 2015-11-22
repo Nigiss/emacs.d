@@ -1,4 +1,9 @@
+;;; package --- helm-config
+
+;;; Commentary:
 (require 'helm)
+
+;;; Code:
 (helm-mode 1)
 (helm-autoresize-mode 1)
 
@@ -9,3 +14,4 @@
 (global-set-key (kbd "C-x C-d") 'dired)
 
 (provide 'init-helm)
+;;; init-helm ends here

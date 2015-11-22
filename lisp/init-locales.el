@@ -29,7 +29,10 @@
 
 ;; Global settings
 (window-numbering-mode 1)
-(menu-bar-mode nil)
+(menu-bar-mode 0)
+(global-linum-mode 1)
+(set-face-foreground 'linum "#fff000")
+(setq linum-format "%4d ")
 
 :; General
 (defun comment-or-uncomment-region-or-line ()
@@ -58,18 +61,18 @@
   (if (= (point) (progn (back-to-indentation) (point)))
       (beginning-of-line)))
 
-(add-hook 'eww-mode-hook
-          (lambda ()
-            (local-set-key (kbd "j") 'scroll-up-line)
-            (local-set-key (kbd "k") 'scroll-down-line)
-            (local-set-key (kbd "l") 'recenter-top-bottom)
-            (local-set-key (kbd "]") 'w3m-next-buffer)
-            (local-set-key (kbd "[") 'w3m-previous-buffer)
-            (local-set-key (kbd "i") 'w3m-next-anchor)
-            (local-set-key (kbd "o") 'w3m-previous-anchor)
-            (local-set-key (kbd "t") 'w3m-create-empty-session)
-            (local-set-key (kbd "x") 'w3m-delete-buffer)
-            (local-set-key (kbd "r") 'w3m-reload-this-page)))
+;; (add-hook 'w3m-mode-hook
+;;           (lambda ()
+;;             (local-set-key (kbd "j") 'scroll-up-line)
+;;             (local-set-key (kbd "k") 'scroll-down-line)
+;;             (local-set-key (kbd "l") 'recenter-top-bottom)
+;;             (local-set-key (kbd "]") 'w3m-next-buffer)
+;;             (local-set-key (kbd "[") 'w3m-previous-buffer)
+;;             (local-set-key (kbd "i") 'w3m-next-anchor)
+;;             (local-set-key (kbd "o") 'w3m-previous-anchor)
+;;             (local-set-key (kbd "t") 'w3m-create-empty-session)
+;;             (local-set-key (kbd "x") 'w3m-delete-buffer)
+;;             (local-set-key (kbd "r") 'w3m-reload-this-page)))
 
 (defun info-config ()
   (local-set-key (kbd "j") 'scroll-up-line)

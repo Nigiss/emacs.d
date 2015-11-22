@@ -19,24 +19,16 @@
 
 ;; My configurations
 ;; Golbal
-(global-set-key (kbd "M-/") 'undo-tree-redo)
+(global-set-key (kbd "C-M-/") 'undo-tree-redo)
+(global-set-key (kbd "M-?") 'comment-or-uncomment-region-or-line)
+(global-set-key (kbd "C-M-j") 'next-line-beginning-and-newline-and-indent)
+(global-set-key (kbd "C-j") 'previous-line-end-and-newline-and-inndent)
+(global-set-key (kbd "C-a") 'back-to-indentation-or-beginning)
+(global-set-key (kbd "M-'") 'rgrep)
 
-(helm-mode 1)
-(helm-autoresize-mode 1)
 (window-numbering-mode 1)
-(auto-save-mode nil)
 
-(global-set-key (kbd "C-x C-m") 'helm-M-x)
-(global-set-key (kbd "C-x C-b") 'ido-find-file)
-(global-set-key (kbd "C-x C-f") 'helm-for-files)
-(global-set-key (kbd "C-x C-p") 'helm-projects-find-files)
-(global-set-key (kbd "C-x C-d") 'helm-find)
-
-(add-to-list 'auto-mode-alist '("\\.tpl$" . html-mode))
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/molokai-theme")
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/emacs-color-theme-solarized")
-
-;; Local
+:; General
 (defun comment-or-uncomment-region-or-line ()
   "Comments or uncomments the region or the current line if there's no active region."
   (interactive)
@@ -63,37 +55,6 @@
   (if (= (point) (progn (back-to-indentation) (point)))
       (beginning-of-line)))
 
-(defun kill-current-line ()
-  (interactive)
-  (move-beginning-of-line nil)
-  (kill-line 1)
-  (back-to-indentation-or-beginning))
-
-(defun delete-tern-process ()
-  (interactive)
-  (delete-process "Tern"))
-
-(defun my-prog-config ()
-  "Modify keymaps used by 'js2-mode'."
-  (setq tab-width 4)
-  (local-set-key (kbd "M-?") 'comment-or-uncomment-region-or-line)
-  (local-set-key (kbd "C-M-j") 'next-line-beginning-and-newline-and-indent)
-  (local-set-key (kbd "C-j") 'previous-line-end-and-newline-and-indent)
-  (local-set-key (kbd "C-a") 'back-to-indentation-or-beginning)
-  (local-set-key (kbd "M-'") 'rgrep)
-  (local-set-key (kbd "M-k") 'kill-current-line)
-  (local-set-key (kbd "C-M-p") 'scroll-down-line)
-  (local-set-key (kbd "C-M-n") 'scroll-up-line))
-
-(add-hook 'js2-mode-hook 'my-prog-config)
-(add-hook 'js2-mode-hook (lambda () (tern-mode t)))
-(eval-after-load 'tern
-  '(progn
-     (require 'tern-auto-complete)
-     (tern-ac-setup)))
-(add-hook 'html-mode-hook 'my-prog-config)
-(add-hook 'css-mode-hook 'my-prog-config)
-
 (add-hook 'eww-mode-hook
           (lambda ()
             (local-set-key (kbd "j") 'scroll-up-line)
@@ -107,20 +68,11 @@
             (local-set-key (kbd "x") 'w3m-delete-buffer)
             (local-set-key (kbd "r") 'w3m-reload-this-page)))
 
-(defun my-browse-config ()
+(defun info-config ()
   (local-set-key (kbd "j") 'scroll-up-line)
   (local-set-key (kbd "k") 'scroll-down-line))
 
-
-(add-hook 'Info-mode-hook 'my-browse-config)
-(add-hook 'help-mode-hook 'my-browse-config)
-
-(add-hook 'after-save-hook
-          #'(lambda ()
-              (and
-               (string-equal (file-name-extension (buffer-file-name)) "tpl")
-               (shell-command (concat "~/browser-fe/common/build/tpl.py " buffer-file-name " > /dev/null"))
-               (message
-                (concat "Saved as script: " buffer-file-name)))))
+(add-hook 'Info-mode-hook 'info-config)
+(add-hook 'help-mode-hook 'info-config)
 
 (provide 'init-locales)

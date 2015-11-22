@@ -30,5 +30,8 @@ This is helpful for writeroom-mode, in particular."
           'sanityinc/maybe-adjust-visual-fill-column)
 
 
+;;; Default font
+(add-to-list 'default-frame-alist
+             '(font . "DejaVu Sans Mono-12"))
 
 (provide 'init-fonts)

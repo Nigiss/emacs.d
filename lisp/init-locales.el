@@ -23,16 +23,17 @@
 (global-set-key (kbd "C-M-/") 'undo-tree-redo)
 (global-set-key (kbd "M-?") 'comment-or-uncomment-region-or-line)
 (global-set-key (kbd "C-M-j") 'next-line-beginning-and-newline-and-indent)
-(global-set-key (kbd "C-j") 'previous-line-end-and-newline-and-inndent)
+(global-set-key (kbd "C-j") 'previous-line-end-and-newline-and-indent)
 (global-set-key (kbd "C-a") 'back-to-indentation-or-beginning)
 (global-set-key (kbd "M-'") 'rgrep)
+(global-set-key (kbd "C-x t") 'ansi-term)
 
 ;; Global settings
 (window-numbering-mode 1)
 (menu-bar-mode 0)
 (global-linum-mode 1)
 (set-face-foreground 'linum "#fff000")
-(setq linum-format "%4d ")
+(setq linum-format "%3d ")
 
 :; General
 (defun comment-or-uncomment-region-or-line ()
@@ -47,7 +48,7 @@
 (defun previous-line-end-and-newline-and-indent ()
   "Move curve to previous line end then newline and indent."
   (interactive)
-  (move-beginning-of-line nil)
+  (back-to-indentation-or-beginning)
   (sanityinc/open-line-with-reindent 1))
 
 (defun next-line-beginning-and-newline-and-indent ()

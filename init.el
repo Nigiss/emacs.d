@@ -153,6 +153,7 @@
 (require 'init-locales)
 (require 'init-helm)
 (require 'init-web)
+(require 'init-w3m)
 
 (add-hook 'after-init-hook
           (lambda ()

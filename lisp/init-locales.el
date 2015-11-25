@@ -25,12 +25,14 @@
 (global-set-key (kbd "C-M-j") 'next-line-beginning-and-newline-and-indent)
 (global-set-key (kbd "C-j") 'previous-line-end-and-newline-and-indent)
 (global-set-key (kbd "C-a") 'back-to-indentation-or-beginning)
-(global-set-key (kbd "M-'") 'rgrep)
+(global-set-key (kbd "M-,") 'pop-tag-mark)
 (global-set-key (kbd "C-x t") 'ansi-term)
 
 ;; Global settings
+(require-package 'window-numbering)
 (window-numbering-mode 1)
-(menu-bar-mode 0)
+
+;; (menu-bar-mode 1)
 (global-linum-mode 1)
 (set-face-foreground 'linum "#fff000")
 (setq linum-format "%3d ")
@@ -62,22 +64,11 @@
   (if (= (point) (progn (back-to-indentation) (point)))
       (beginning-of-line)))
 
-;; (add-hook 'w3m-mode-hook
-;;           (lambda ()
-;;             (local-set-key (kbd "j") 'scroll-up-line)
-;;             (local-set-key (kbd "k") 'scroll-down-line)
-;;             (local-set-key (kbd "l") 'recenter-top-bottom)
-;;             (local-set-key (kbd "]") 'w3m-next-buffer)
-;;             (local-set-key (kbd "[") 'w3m-previous-buffer)
-;;             (local-set-key (kbd "i") 'w3m-next-anchor)
-;;             (local-set-key (kbd "o") 'w3m-previous-anchor)
-;;             (local-set-key (kbd "t") 'w3m-create-empty-session)
-;;             (local-set-key (kbd "x") 'w3m-delete-buffer)
-;;             (local-set-key (kbd "r") 'w3m-reload-this-page)))
-
 (defun info-config ()
   (local-set-key (kbd "j") 'scroll-up-line)
-  (local-set-key (kbd "k") 'scroll-down-line))
+  (local-set-key (kbd "k") 'scroll-down-line)
+  (local-set-key (kbd "n") 'forward-button)
+  (local-set-key (kbd "p") 'backward-button))
 
 (add-hook 'Info-mode-hook 'info-config)
 (add-hook 'help-mode-hook 'info-config)

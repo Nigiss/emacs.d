@@ -26,18 +26,49 @@
 (global-set-key (kbd "C-j") 'previous-line-end-and-newline-and-indent)
 (global-set-key (kbd "C-a") 'back-to-indentation-or-beginning)
 (global-set-key (kbd "M-,") 'pop-tag-mark)
-(global-set-key (kbd "C-x t") 'ansi-term)
+(global-set-key (kbd "C-x t") (lambda ()
+                                (interactive)
+                                (ansi-term "/bin/zsh")))
+
+(global-set-key (kbd "C-c C-p C-l") 'package-list-packages)
+(global-set-key (kbd "C-c C-p C-i") 'package-install)
+
+(add-hook 'emacs-lisp-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-c C-r") 'reload-emacs-config-file)))
 
 ;; Global settings
+
+(global-auto-complete-mode t)
+
+;; Window switch
 (require-package 'window-numbering)
 (window-numbering-mode 1)
 
-;; (menu-bar-mode 1)
+;; Default theme
+(require-package 'molokai-theme)
+(load-theme 'molokai)
+
+;; Line number
 (global-linum-mode 1)
 (set-face-foreground 'linum "#fff000")
 (setq linum-format "%3d ")
 
-:; General
+;; Display time
+(setq display-time-24hr-format t
+      display-time-day-and-date t
+      display-time-use-mail-icon t
+      display-time-interval 10
+      display-time-format "%H:%M %A %m月%d日")
+(display-time-mode 1)
+
+:; General function
+(defun reload-emacs-config-file ()
+  "Default current."
+  (interactive)
+  (save-buffer)
+  (load-file buffer-file-name))
+
 (defun comment-or-uncomment-region-or-line ()
   "Comments or uncomments the region or the current line if there's no active region."
   (interactive)

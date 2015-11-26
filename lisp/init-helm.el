@@ -19,7 +19,7 @@
 (global-set-key (kbd "C-x C-p") 'helm-projects-find-files)
 (global-set-key (kbd "C-x C-b") 'helm-multi-files)
 (global-set-key (kbd "M-'") 'helm-do-grep)
-(global-set-key (kbd "M-Y") 'helm-show-kill-ring)
+(global-set-key (kbd "C-M-y") 'helm-show-kill-ring)
 
 (provide 'init-helm)
 ;;; init-helm ends here

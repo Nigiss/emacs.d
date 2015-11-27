@@ -23,7 +23,7 @@
   (when (and (not (minibufferp))
 	     (fboundp 'auto-complete-mode)
 	     auto-complete-mode)
-    #'auto-complete))
+    #'ac-complete-with-helm))
 
 (defun sanityinc/never-indent ()
   (set (make-local-variable 'indent-line-function) (lambda () 'noindent)))

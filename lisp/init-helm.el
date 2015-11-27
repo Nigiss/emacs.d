@@ -11,8 +11,13 @@
 (eval-after-load 'helm-grep
   '(setq helm-grep-default-command helm-grep-default-recurse-command))
 
+;;; Search by helm
 (require-package 'helm-swoop)
 (global-set-key (kbd "C-s") 'helm-swoop)
+
+;;; Search current git repository
+(require-package 'helm-ls-git)
+(global-set-key (kbd "C-x C-g") 'helm-ls-git-ls)
 
 (global-set-key (kbd "C-x C-m") 'helm-M-x)
 (global-set-key (kbd "C-x C-f") 'ido-find-file)

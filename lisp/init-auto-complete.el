@@ -19,6 +19,7 @@
       c-insert-tab-function 'indent-for-tab-command)
 
 ;; hook AC into completion-at-point
+(require-package 'ac-helm)
 (defun sanityinc/auto-complete-at-point ()
   (when (and (not (minibufferp))
 	     (fboundp 'auto-complete-mode)

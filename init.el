@@ -150,10 +150,11 @@
 ;;----------------------------------------------------------------------------
 ;; Locales (setting them earlier in this file doesn't work in X)
 ;;----------------------------------------------------------------------------
-(require 'init-locales)
+
 (require 'init-helm)
 (require 'init-web)
 (require 'init-w3m)
+(require 'init-locales)
 
 (add-hook 'after-init-hook
           (lambda ()

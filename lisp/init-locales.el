@@ -17,10 +17,10 @@
   (set-selection-coding-system (if (eq system-type 'windows-nt) 'utf-16-le 'utf-8))
   (prefer-coding-system 'utf-8))
 
-;; My configurations
+;;; My configurations
 
-;; Golbal key bindings
-(global-set-key (kbd "C-M-/") 'undo-tree-redo)
+;;; Golbal key bindings
+(global-set-key (kbd "C-M-_") 'undo-tree-redo)
 (global-set-key (kbd "M-?") 'comment-or-uncomment-region-or-line)
 (global-set-key (kbd "C-M-j") 'next-line-beginning-and-newline-and-indent)
 (global-set-key (kbd "C-j") 'previous-line-end-and-newline-and-indent)
@@ -30,31 +30,36 @@
                                 (interactive)
                                 (ansi-term "/bin/zsh")))
 
-(global-set-key (kbd "C-c C-p C-l") 'package-list-packages)
-(global-set-key (kbd "C-c C-p C-i") 'package-install)
+(global-set-key (kbd "C-c C-p l") 'package-list-packages)
+(global-set-key (kbd "C-c C-p i") 'package-install)
 
 (add-hook 'emacs-lisp-mode-hook
           (lambda ()
-            (local-set-key (kbd "C-c C-r") 'reload-emacs-config-file)))
+            (local-set-key (kbd "C-c C-r")
+                           (lambda ()
+                             (interactive)
+                             (save-buffer)
+                             (load-file buffer-file-name)))))
 
-;; Global settings
-
+;;; Global settings
+(menu-bar-mode -1)
 (global-auto-complete-mode t)
 
-;; Window switch
+;;; Window switch
 (require-package 'window-numbering)
 (window-numbering-mode 1)
 
-;; Default theme
+;;; Default theme
 (require-package 'molokai-theme)
 (load-theme 'molokai)
 
-;; Line number
+;;; Line number
 (global-linum-mode 1)
-(set-face-foreground 'linum "#fff000")
+(set-face-foreground 'linum "#888")
+(set-face-background 'linum "#1c1c1c")
 (setq linum-format "%3d ")
 
-;; Display time
+;;; Display time
 (setq display-time-24hr-format t
       display-time-day-and-date t
       display-time-use-mail-icon t
@@ -63,12 +68,6 @@
 (display-time-mode 1)
 
 :; General function
-(defun reload-emacs-config-file ()
-  "Default current."
-  (interactive)
-  (save-buffer)
-  (load-file buffer-file-name))
-
 (defun comment-or-uncomment-region-or-line ()
   "Comments or uncomments the region or the current line if there's no active region."
   (interactive)

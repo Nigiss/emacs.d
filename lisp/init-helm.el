@@ -15,9 +15,14 @@
 (require-package 'helm-swoop)
 (global-set-key (kbd "C-s") 'helm-swoop)
 
+;;; Search by helm
+(require-package 'company)
+(require-package 'helm-company)
+(global-set-key (kbd "C-c C-i") 'helm-company)
+
 ;;; Search current git repository
 (require-package 'helm-ls-git)
-(global-set-key (kbd "C-x C-g") 'helm-ls-git-ls)
+(global-set-key (kbd "C-x C-d") 'helm-ls-git-ls)
 
 (global-set-key (kbd "C-x C-m") 'helm-M-x)
 (global-set-key (kbd "C-x C-f") 'ido-find-file)

@@ -31,17 +31,18 @@
 (global-set-key (kbd "C-a") 'back-to-indentation-or-beginning)
 (global-set-key (kbd "M-,") 'pop-tag-mark)
 (global-set-key (kbd "C-;") 'eval-expression)
+(global-set-key (kbd "C-x d") 'neotree-toggle)
 (global-set-key (kbd "C-x k") (lambda ()
                                 (interactive)
                                 (kill-buffer)))
 
+;;; Custom
 (global-set-key (kbd "C-c C-p a") (lambda ()
                                     (interactive)
                                     (ansi-term "/bin/zsh")))
 (global-set-key (kbd "C-c C-p e") (lambda ()
                                     (interactive)
                                     (eshell)))
-
 (global-set-key (kbd "C-c C-p l") 'package-list-packages)
 (global-set-key (kbd "C-c C-p i") 'package-install)
 
@@ -64,6 +65,15 @@
 ;;; Default theme
 (require-package 'molokai-theme)
 (load-theme 'molokai)
+
+;;; Neo tree
+(require-package 'neotree)
+(add-hook 'neotree-mode-hook
+          (lambda ()
+            (local-set-key (kbd "j") 'next-line)
+            (local-set-key (kbd "k") 'previous-line)
+            (local-set-key (kbd "o") 'neotree-enter)
+            (local-set-key (kbd "u") 'neotree-select-up-node)))
 
 ;;; Line number
 (global-linum-mode 1)

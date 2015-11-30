@@ -8,8 +8,8 @@
 
 (add-auto-mode 'html-mode ".tpl")
 
-(shell-command "sudo apt-get install nodejs")
-(shell-command "sudo npm install -g tern")
+;;(shell-command "sudo apt-get install nodejs")
+;;(shell-command "sudo npm install -g tern")
 (require-package 'tern)
 (require-package 'tern-auto-complete)
 

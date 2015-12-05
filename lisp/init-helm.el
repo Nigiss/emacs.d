@@ -15,6 +15,18 @@
 (require-package 'helm-swoop)
 (global-set-key (kbd "C-s") 'helm-swoop)
 
+(let* ((base-dir (file-name-directory (buffer-file-name)))
+       (home-dir (substring base-dir 0 (progn
+                                         (string-match "\/.*?\/.*?\/" base-dir)
+                                         (match-end 0)))))
+  (do ((curr-dir base-dir (substring curr-dir 0 (progn
+                                                  (string-match "\/.*\/" (substring curr-dir 0 -1))
+                                                  (match-end 0)))))
+      ((equal nil (string-match "/home/.*?/" curr-dir)))
+    (if (> (list-length (directory-files curr-dir nil ".*\.git$")) 0)
+        (setq home-dir curr-dir)))
+  (return home-dir))
+
 ;;; Search by helm
 (require-package 'company)
 (require-package 'helm-company)

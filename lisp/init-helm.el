@@ -26,16 +26,18 @@
                   nil
                   (grep-read-regexp)))
 
-(let ((current-file-name (buffer-file-name (current-buffer))))
-  (dolist (string-match "/.*/" current-file-name))
-  (> (list-length (directory-files (substring current-file-name 0 (- (match-end 0) 1)) :MATCH ".git$")) 0))
+(let* ((base-dir (file-name-directory (buffer-file-name)))
+       (home-dir (substring base-dir (string-match "\/.*?\/.*?\/" base-dir) (match-end 0))))
+  (do ((curr-dir base-dir (substring curr-dir (string-match "\/.*\/" (substring curr-dir 0 -1)) (match-end 0))))
+      ((equal nil (string-match "/home/.*?/" curr-dir)))
+    (if (> (list-length (directory-files curr-dir nil ".*\.git$")) 0)
+        (setq home-dir curr-dir)))
+  (print home-dir))
 
-(progn
-  (string-match "/.*?/" "/home/vag/web/src")
-  (match-end 0))
-
-(string-ma)
-
+;;; Search by helm
+(require-package 'company)
+(require-package 'helm-company)
+(global-set-key (kbd "C-c C-i") 'helm-company)
 
 (defun synelics/helm-search ()
   (interactive)

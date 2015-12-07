@@ -2,34 +2,56 @@
 
 ;;; Commentary:
 (require-package 'helm)
+(require-package 'helm-ls-git)
+
+(require 'helm)
+(require 'grep)
+(require 'helm-grep)
+(require 'helm-swoop)
+
 
 ;;; Code:
 (helm-mode 1)
 (helm-autoresize-mode 1)
 
-;;; helm-do-grep recursive
-(eval-after-load 'helm-grep
-  '(setq helm-grep-default-command helm-grep-default-recurse-command))
+(add-to-list 'helm-grep-ignored-directories "_build")
+(add-to-list 'helm-grep-ignored-directories "duokan")
 
-;;; Search by helm
-(require-package 'helm-swoop)
-(global-set-key (kbd "C-s") 'helm-swoop)
+(defun synelics/helm-rgrep ()
+  (interactive)
+  (helm-do-grep-1 '("/home/vagrant/webroot/pad-v2/phone-v2")
+                  :recursive
+                  nil
+                  '("*.js" "*.tpl" "*.css")
+                  nil
+                  (grep-read-regexp)))
 
-;;; Search by helm
-(require-package 'company)
-(require-package 'helm-company)
-(global-set-key (kbd "C-c C-i") 'helm-company)
+(let ((current-file-name (buffer-file-name (current-buffer))))
+  (dolist (string-match "/.*/" current-file-name))
+  (> (list-length (directory-files (substring current-file-name 0 (- (match-end 0) 1)) :MATCH ".git$")) 0))
 
-;;; Search current git repository
-(require-package 'helm-ls-git)
+(progn
+  (string-match "/.*?/" "/home/vag/web/src")
+  (match-end 0))
+
+(string-ma)
+
+
+(defun synelics/helm-search ()
+  (interactive)
+  (helm-swoop :$query ""))
+
+;; (require-package 'company)
+;; (require-package 'helm-company)
+;; (global-set-key (kbd "C-c C-i") 'helm-company)
+
 (global-set-key (kbd "C-x C-d") 'helm-ls-git-ls)
-
 (global-set-key (kbd "C-x C-m") 'helm-M-x)
 (global-set-key (kbd "C-x C-f") 'ido-find-file)
 (global-set-key (kbd "C-x C-p") 'helm-projects-find-files)
 (global-set-key (kbd "C-x C-b") 'helm-multi-files)
-(global-set-key (kbd "M-'") 'helm-do-grep)
 (global-set-key (kbd "C-M-y") 'helm-show-kill-ring)
+(global-set-key (kbd "C-s") 'synelics/helm-search)
 
 (provide 'init-helm)
 ;;; init-helm ends here

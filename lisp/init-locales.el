@@ -31,6 +31,10 @@
 (global-set-key (kbd "C-a") 'back-to-indentation-or-beginning)
 (global-set-key (kbd "M-,") 'pop-tag-mark)
 (global-set-key (kbd "C-;") 'eval-expression)
+(global-set-key (kbd "M-g") 'goto-line)
+(global-set-key (kbd "C-l") 'recenter-top-bottom)
+(global-set-key (kbd "C-M-;") 'highlight-symbol)
+(global-set-key (kbd "C-M-'") 'highlight-symbol-occur)
 (global-set-key (kbd "C-x d") 'neotree-toggle)
 (global-set-key (kbd "C-x k") (lambda ()
                                 (interactive)
@@ -56,7 +60,7 @@
 
 ;;; Global settings
 (menu-bar-mode -1)
-(global-auto-complete-mode t)
+(highlight-symbol-mode nil)
 
 ;;; Window switch
 (require-package 'window-numbering)
@@ -73,7 +77,11 @@
             (local-set-key (kbd "j") 'next-line)
             (local-set-key (kbd "k") 'previous-line)
             (local-set-key (kbd "o") 'neotree-enter)
-            (local-set-key (kbd "u") 'neotree-select-up-node)))
+            (local-set-key (kbd "u") 'neotree-select-up-node)
+            (local-set-key (kbd "c") 'neotree-create-node)
+            (local-set-key (kbd "d") 'neotree-delete-node)
+            (local-set-key (kbd "r") 'neotree-rename-node)
+            (local-set-key (kbd "i") 'neotree-change-root)))
 
 ;;; Line number
 (global-linum-mode 1)
@@ -115,12 +123,12 @@
              (forward-char 1)
              (setq end (- (re-search-forward "[^0-9-a-zA-Z_]") 1))
              (backward-char 1)))
-          ;;; Spliters
           (t
            (setq beg cur end cur)))
     (progn
       (goto-char cur)
       (cons beg end))))
+
 
 (defun copy-selection-or-current-string ()
   (interactive)

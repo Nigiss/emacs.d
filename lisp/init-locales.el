@@ -24,35 +24,50 @@
 (global-set-key (kbd "M-?") 'comment-or-uncomment-region-or-line)
 (global-set-key (kbd "M-w") 'copy-selection-or-current-string)
 (global-set-key (kbd "C-M-w") 'kill-current-string)
+(global-set-key (kbd "C-M-d") 'del-current-string)
 (global-set-key (kbd "M-k") 'copy-current-line)
 (global-set-key (kbd "M-RET") 'helm-M-x)
 (global-set-key (kbd "C-M-j") 'next-line-beginning-and-newline-and-indent)
 (global-set-key (kbd "C-j") 'previous-line-end-and-newline-and-indent)
 (global-set-key (kbd "C-a") 'back-to-indentation-or-beginning)
 (global-set-key (kbd "M-,") 'pop-tag-mark)
+(global-set-key (kbd "M-'") 'synelics/helm-rgrep)
 (global-set-key (kbd "C-;") 'eval-expression)
 (global-set-key (kbd "M-g") 'goto-line)
 (global-set-key (kbd "C-l") 'recenter-top-bottom)
 (global-set-key (kbd "C-M-;") 'highlight-symbol)
 (global-set-key (kbd "C-M-'") 'highlight-symbol-occur)
+;; (global-set-key (kbd "C-x d") (lambda ()
+;;                                 (interactive)
+;;                                 (require 'neotree)
+;;                                 (if (neo-global--window-exists-p)
+;;                                     (neotree-hide)
+;;                                   (neotree-dir (file-name-directory (buffer-file-name))))))
 (global-set-key (kbd "C-x d") 'neotree-toggle)
 (global-set-key (kbd "C-x k") (lambda ()
                                 (interactive)
                                 (kill-buffer)))
 
 ;;; Custom
-(global-set-key (kbd "C-c C-p a") (lambda ()
-                                    (interactive)
-                                    (ansi-term "/bin/zsh")))
-(global-set-key (kbd "C-c C-p e") (lambda ()
-                                    (interactive)
-                                    (eshell)))
-(global-set-key (kbd "C-c C-p l") 'package-list-packages)
-(global-set-key (kbd "C-c C-p i") 'package-install)
-
+(global-set-key (kbd "C-c C-x C-u") 'Synelics/upcase-char)
+(global-set-key (kbd "C-c C-x C-d") 'Synelics/downcase-char)
+(global-set-key (kbd "C-c C-x C-a") (lambda ()
+                                      (interactive)
+                                      (ansi-term "/bin/zsh")))
+(global-set-key (kbd "C-c C-x C-e") (lambda ()
+                                      (interactive)
+                                      (shell)))
+(global-set-key (kbd "C-c C-x C-l") 'package-list-packages)
+(global-set-key (kbd "C-c C-x C-i") 'package-install)
+(global-set-key (kbd "C-c C-x C-p") (lambda ()
+                                      (interactive)
+                                      (switch-to-prev-buffer)))
+(global-set-key (kbd "C-c C-x C-n") (lambda ()
+                                      (interactive)
+                                      (switch-to-next-buffer)))
 (add-hook 'emacs-lisp-mode-hook
           (lambda ()
-            (local-set-key (kbd "C-c C-r")
+            (local-set-key (kbd "C-c C-x C-r")
                            (lambda ()
                              (interactive)
                              (save-buffer)
@@ -60,7 +75,7 @@
 
 ;;; Global settings
 (menu-bar-mode -1)
-(highlight-symbol-mode nil)
+(highlight-symbol-mode -1)
 
 ;;; Window switch
 (require-package 'window-numbering)
@@ -94,14 +109,33 @@
  '(show-paren-match ((t (:background "#fd971f" :foreground "#fff")))))
 
 ;;; Display time
- (setq display-time-24hr-format t
-       display-time-day-and-date t
-       display-time-use-mail-icon t
-       display-time-interval 10
-       display-time-format "%H:%M %A %m月%d日")
+(setq display-time-24hr-format t
+      display-time-day-and-date t
+      display-time-use-mail-icon t
+      display-time-interval 10
+      display-time-format "%H:%M %a")
 (display-time-mode 1)
 
 :; General function
+(defun Synelics/upcase-char ()
+  "Upcase current char and forward."
+  (interactive)
+  (let ((beg (point))
+        end)
+    (forward-char 1)
+    (setq end (point))
+    (upcase-region beg end)))
+
+(defun Synelics/downcase-char ()
+  "Downcase current char and forward."
+  (interactive)
+  (let ((beg (point))
+        end)
+    (forward-char 1)
+    (setq end (point))
+    (downcase-region beg end)))
+
+
 (defun comment-or-uncomment-region-or-line ()
   "Comments or uncomments the region or the current line if there's no active region."
   (interactive)
@@ -113,15 +147,16 @@
 
 (defun begin-and-end-point-cons-of-current-string ()
   (let ((cur (point))
+        (reg "[^0-9-a-zA-Z_$]")
         beg
         end)
     (cond ((region-active-p)
            (setq beg (region-beginning) end (region-end)))
-          ((string-match-p "[0-9-a-zA-Z_]" (word-at-point))
+          ((not (equal (word-at-point) nil))
            (progn
-             (setq beg (+ (re-search-backward "[^0-9-a-zA-Z_]") 1))
+             (setq beg (+ (re-search-backward reg) 1))
              (forward-char 1)
-             (setq end (- (re-search-forward "[^0-9-a-zA-Z_]") 1))
+             (setq end (- (re-search-forward reg) 1))
              (backward-char 1)))
           (t
            (setq beg cur end cur)))
@@ -140,6 +175,10 @@
 (defun kill-current-string ()
   (interactive)
   (kill-region (car (begin-and-end-point-cons-of-current-string)) (cdr (begin-and-end-point-cons-of-current-string))))
+
+(defun del-current-string ()
+  (interactive)
+  (delete-region (car (begin-and-end-point-cons-of-current-string)) (cdr (begin-and-end-point-cons-of-current-string))))
 
 (defun copy-current-line ()
   (interactive)

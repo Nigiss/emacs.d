@@ -16,23 +16,22 @@
 
 (add-to-list 'helm-grep-ignored-directories "_build")
 (add-to-list 'helm-grep-ignored-directories "duokan")
+(add-to-list 'helm-grep-ignored-directories "dist")
 
 (defun synelics/helm-rgrep ()
   (interactive)
-  (helm-do-grep-1 '("/home/vagrant/webroot/pad-v2/phone-v2")
+  (helm-do-grep-1 (let* ((base-dir (file-name-directory (buffer-file-name)))
+                         (home-dir (substring base-dir (string-match "\/.*?\/.*?\/" base-dir) (match-end 0))))
+                    (do ((curr-dir base-dir (substring curr-dir (string-match "\/.*\/" (substring curr-dir 0 -1)) (match-end 0))))
+                        ((equal nil (string-match "/home/.*?/" curr-dir)))
+                      (if (> (list-length (directory-files curr-dir nil ".*\.git$")) 0)
+                          (setq home-dir curr-dir)))
+                    (list home-dir))
                   :recursive
                   nil
-                  '("*.js" "*.tpl" "*.css")
+                  '("*.js" "*.css" "*.tpl" "*.py" "*.el")
                   nil
                   (grep-read-regexp)))
-
-(let* ((base-dir (file-name-directory (buffer-file-name)))
-       (home-dir (substring base-dir (string-match "\/.*?\/.*?\/" base-dir) (match-end 0))))
-  (do ((curr-dir base-dir (substring curr-dir (string-match "\/.*\/" (substring curr-dir 0 -1)) (match-end 0))))
-      ((equal nil (string-match "/home/.*?/" curr-dir)))
-    (if (> (list-length (directory-files curr-dir nil ".*\.git$")) 0)
-        (setq home-dir curr-dir)))
-  (print home-dir))
 
 ;;; Search by helm
 (require-package 'company)
@@ -41,6 +40,7 @@
 
 (defun synelics/helm-search ()
   (interactive)
+  (require 'helm-swoop)
   (helm-swoop :$query ""))
 
 ;; (require-package 'company)

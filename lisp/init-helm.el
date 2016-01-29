@@ -3,12 +3,11 @@
 ;;; Commentary:
 (require-package 'helm)
 (require-package 'helm-ls-git)
+(require-package 'helm-swoop)
 
 (require 'helm)
 (require 'grep)
 (require 'helm-grep)
-(require 'helm-swoop)
-
 
 ;;; Code:
 (helm-mode 1)

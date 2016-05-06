@@ -23,10 +23,13 @@
 (global-set-key (kbd "C-M-_") 'undo-tree-redo)
 (global-set-key (kbd "M-?") 'comment-or-uncomment-region-or-line)
 (global-set-key (kbd "M-w") 'copy-selection-or-current-string)
-(global-set-key (kbd "C-M-w") 'kill-current-string)
+(global-set-key (kbd "C-M-w") 'del-current-string-and-paste)
 (global-set-key (kbd "C-M-d") 'del-current-string)
 (global-set-key (kbd "M-k") 'copy-current-line)
-(global-set-key (kbd "M-RET") 'helm-M-x)
+(global-set-key (kbd "C-x C-d") 'Synelics/find-file-in-git-repository)
+(global-set-key (kbd "C-x C-b") 'ido-switch-buffer)
+;; (global-set-key (kbd "C-x C-f") 'ido-find-file)
+;; (global-set-key (kbd "C-s") 'isearch-forward)
 (global-set-key (kbd "C-M-j") 'next-line-beginning-and-newline-and-indent)
 (global-set-key (kbd "C-j") 'previous-line-end-and-newline-and-indent)
 (global-set-key (kbd "C-a") 'back-to-indentation-or-beginning)
@@ -54,17 +57,17 @@
 (global-set-key (kbd "C-c C-x C-a") (lambda ()
                                       (interactive)
                                       (ansi-term "/bin/zsh")))
-(global-set-key (kbd "C-c C-x C-e") (lambda ()
-                                      (interactive)
-                                      (shell)))
+(global-set-key (kbd "C-c C-x C-e") 'shell)
 (global-set-key (kbd "C-c C-x C-l") 'package-list-packages)
 (global-set-key (kbd "C-c C-x C-i") 'package-install)
-(global-set-key (kbd "C-c C-x C-p") (lambda ()
+(global-set-key (kbd "C-c C-x C-p") 'switch-to-prev-buffer)
+(global-set-key (kbd "C-c C-x C-n") 'switch-to-next-buffer)
+(global-set-key (kbd "C-c C-x C-v") 'visit-tags-table)
+(global-set-key (kbd "C-c C-x C-t") 'Synelics/update-tags-table)
+(global-set-key (kbd "C-c C-x C-m") 'mc/mark-all-symbols-like-this)
+(global-set-key (kbd "C-c C-x C-f") (lambda ()
                                       (interactive)
-                                      (switch-to-prev-buffer)))
-(global-set-key (kbd "C-c C-x C-n") (lambda ()
-                                      (interactive)
-                                      (switch-to-next-buffer)))
+                                      (revert-buffer t t)))
 (add-hook 'emacs-lisp-mode-hook
           (lambda ()
             (local-set-key (kbd "C-c C-x C-r")
@@ -76,6 +79,11 @@
 ;;; Global settings
 (menu-bar-mode -1)
 (highlight-symbol-mode -1)
+(global-auto-revert-mode 1)
+(auto-save-mode nil)
+
+;;; Gc freq
+(setq gc-cons-threshold (* 1024 1024 1024))
 
 ;;; Window switch
 (require-package 'window-numbering)
@@ -96,7 +104,23 @@
             (local-set-key (kbd "c") 'neotree-create-node)
             (local-set-key (kbd "d") 'neotree-delete-node)
             (local-set-key (kbd "r") 'neotree-rename-node)
-            (local-set-key (kbd "i") 'neotree-change-root)))
+            (local-set-key (kbd "i") 'neotree-change-root)
+            (local-set-key (kbd "n") 'neotree-select-next-sibling-node)
+            (local-set-key (kbd "p") 'neotree-projectile-action)))
+
+;;; Smooth scrolling
+(require-package 'smooth-scrolling)
+(smooth-scrolling-mode t)
+
+;;; Tags table
+;; (setq tags-table-list
+;;       '("~/webroot/phone-v2"))
+(setq tags-file-name "~/webroot/phone-v2/TAGS")
+(setq tags-revert-without-query 1)
+
+(defvar ido-cur-item nil)
+(defvar ido-default-item nil)
+(defvar ido-cur-list nil)
 
 ;;; Line number
 (global-linum-mode 1)
@@ -116,7 +140,38 @@
       display-time-format "%H:%M %a")
 (display-time-mode 1)
 
+;;; Revert buffer
+(global-auto-revert-mode 1)
+
 :; General function
+(defun Synelics/find-file-in-git-repository ()
+  (interactive)
+  (require 'find-file-in-project)
+  (let* ((project-files (ffip-project-search nil nil))
+         (files (mapcar 'car project-files))
+         (root (Synelics/uppest-git-directory)))
+    (if (> (length files) 0)
+        (progn
+          (find-file (concat
+                      (car root)
+                      (ido-completing-read
+                       (format "Find in %s/: " root)
+                       files))))
+      (message "Nothing found!"))))
+
+(defun Synelics/update-tags-table ()
+  "Update TAGS table."
+  (interactive)
+  (shell-command (concat "bash " (car (Synelics/uppest-git-directory)) "gen-tags.sh")))
+
+(defun Synelics/find-tag ()
+  "Find tag without confirm."
+  (interactive)
+  (let* ((begin-and-end-cons (begin-and-end-point-cons-of-current-string))
+         (begin (car begin-and-end-cons))
+         (end (cdr begin-and-end-cons)))
+    (find-tag (buffer-substring-no-properties begin end))))
+
 (defun Synelics/upcase-char ()
   "Upcase current char and forward."
   (interactive)
@@ -147,7 +202,7 @@
 
 (defun begin-and-end-point-cons-of-current-string ()
   (let ((cur (point))
-        (reg "[^0-9-a-zA-Z_$]")
+        (reg "[^0-9-$a-zA-Z_/]")
         beg
         end)
     (cond ((region-active-p)
@@ -172,13 +227,20 @@
     (setq beg (car (begin-and-end-point-cons-of-current-string)) end (cdr (begin-and-end-point-cons-of-current-string))))
   (copy-region-as-kill beg end))
 
-(defun kill-current-string ()
+(defun del-current-string-and-paste ()
   (interactive)
-  (kill-region (car (begin-and-end-point-cons-of-current-string)) (cdr (begin-and-end-point-cons-of-current-string))))
+  (let* ((begin-and-end-cons (begin-and-end-point-cons-of-current-string))
+         (begin (car begin-and-end-cons))
+         (end (cdr begin-and-end-cons)))
+    (delete-region begin end)
+    (yank)))
 
 (defun del-current-string ()
   (interactive)
-  (delete-region (car (begin-and-end-point-cons-of-current-string)) (cdr (begin-and-end-point-cons-of-current-string))))
+  (let* ((begin-and-end-cons (begin-and-end-point-cons-of-current-string))
+         (begin (car begin-and-end-cons))
+         (end (cdr begin-and-end-cons)))
+    (delete-region begin end)))
 
 (defun copy-current-line ()
   (interactive)

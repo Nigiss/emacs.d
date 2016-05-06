@@ -6,6 +6,9 @@
 (setq ido-auto-merge-work-directories-length 0)
 (setq ido-use-virtual-buffers t)
 
+(require-package 'ido-grid-mode)
+(ido-vertical-mode t)
+
 (when (maybe-require-package 'ido-ubiquitous)
   (ido-ubiquitous-mode t))
 

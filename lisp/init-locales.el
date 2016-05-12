@@ -144,6 +144,11 @@
 (global-auto-revert-mode 1)
 
 :; General function
+(defun Synelics/server-shutdown ()
+  "Save buffers, Quit, and Shutdown (kill) server"
+  (interactive)
+  (kill-emacs))
+
 (defun Synelics/find-file-in-git-repository ()
   (interactive)
   (require 'find-file-in-project)

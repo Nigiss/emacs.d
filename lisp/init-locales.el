@@ -25,8 +25,8 @@
 (global-set-key (kbd "M-w") 'copy-selection-or-current-string)
 (global-set-key (kbd "C-M-w") 'del-current-string-and-paste)
 (global-set-key (kbd "C-M-d") 'del-current-string)
+(global-set-key (kbd "C-x f") 'find-file-in-project)
 (global-set-key (kbd "M-k") 'copy-current-line)
-(global-set-key (kbd "C-x d") 'Synelics/find-file-in-git-repository)
 (global-set-key (kbd "C-M-j") 'next-line-beginning-and-newline-and-indent)
 (global-set-key (kbd "C-j") 'previous-line-end-and-newline-and-indent)
 (global-set-key (kbd "C-a") 'back-to-indentation-or-beginning)
@@ -44,7 +44,6 @@
 (global-unset-key (kbd "C-x l"))
 (global-set-key (kbd "C-x l u") 'Synelics/upcase-char)
 (global-set-key (kbd "C-x l d") 'Synelics/downcase-char)
-
 (global-set-key (kbd "C-x l l") 'package-list-packages)
 (global-set-key (kbd "C-x l i") 'package-install)
 (global-set-key (kbd "C-x l p") 'switch-to-prev-buffer)
@@ -55,6 +54,7 @@
 (global-set-key (kbd "C-x l f") (lambda ()
                                   (interactive)
                                   (revert-buffer t t)))
+(global-set-key (kbd "C-x l j") 'ace-jump-mode)
 (global-set-key (kbd "C-x l e") 'shell)
 (global-set-key (kbd "C-x l a") (lambda ()
                                   (interactive)
@@ -102,6 +102,10 @@
 ;;; Smooth scrolling
 (require-package 'smooth-scrolling)
 (smooth-scrolling-mode t)
+(setq smooth-scroll-margin 1)
+
+;;; YASnippet
+(yas-global-mode t)
 
 ;;; Tags table
 ;; (setq tags-table-list
@@ -140,20 +144,17 @@
   (interactive)
   (kill-emacs))
 
-(defun Synelics/find-file-in-git-repository ()
-  (interactive)
-  (require 'find-file-in-project)
-  (let* ((project-files (ffip-project-search nil nil))
-         (files (mapcar 'car project-files))
-         (root (Synelics/uppest-git-directory)))
-    (if (> (length files) 0)
-        (progn
-          (find-file (concat
-                      (car root)
-                      (ido-completing-read
-                       (format "Find in %s/: " root)
-                       files))))
-      (message "Nothing found!"))))
+
+(defun Synelics/uppest-git-directory ()
+  "Get the uppest git directory name."
+  (let* ((base-dir (file-name-directory (buffer-file-name)))
+         (home-dir (substring base-dir (string-match "\/.*?\/.*?\/" base-dir) (match-end 0))))
+    (do ((curr-dir base-dir (substring curr-dir (string-match "\/.*\/" (substring curr-dir 0 -1)) (match-end 0))))
+        ((equal nil (string-match "/home/.*?/" curr-dir)))
+      (if (> (list-length (directory-files curr-dir nil ".*\.git$")) 0)
+          (progn
+            (setq home-dir curr-dir)
+            (return (list home-dir)))))))
 
 (defun Synelics/update-tags-table ()
   "Update TAGS table."

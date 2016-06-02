@@ -6,7 +6,7 @@
 (setq ido-auto-merge-work-directories-length 0)
 (setq ido-use-virtual-buffers t)
 
-(require-package 'ido-grid-mode)
+(require-package 'ido-vertical-mode)
 (ido-vertical-mode t)
 
 (when (maybe-require-package 'ido-ubiquitous)
@@ -19,6 +19,8 @@
   (global-set-key [remap execute-extended-command] 'smex))
 
 (require-package 'idomenu)
+(require-package 'ido-at-point)
+(ido-at-point-mode t)
 
 ;; Allow the same buffer to be open in different frames
 (setq ido-default-buffer-method 'selected-window)
@@ -26,7 +28,7 @@
 ;; http://www.reddit.com/r/emacs/comments/21a4p9/use_recentf_and_ido_together/cgbprem
 (add-hook 'ido-setup-hook (lambda () (define-key ido-completion-map [up] 'previous-history-element)))
 
-
-
+;; Use ido mode to find files in git repo
+(setq ffip-prefer-ido-mode t)
 
 (provide 'init-ido)

@@ -19,12 +19,12 @@
       c-insert-tab-function 'indent-for-tab-command)
 
 ;; hook AC into completion-at-point
-(require-package 'ac-helm)
+;; (require-package 'ac-helm)
 (defun sanityinc/auto-complete-at-point ()
   (when (and (not (minibufferp))
-	     (fboundp 'auto-complete-mode)
-	     auto-complete-mode)
-    #'ac-complete-with-helm))
+             (fboundp 'auto-complete-mode)
+             auto-complete-mode)))
+    ;; #'ac-complete-with-helm))
 
 (defun sanityinc/never-indent ()
   (set (make-local-variable 'indent-line-function) (lambda () 'noindent)))

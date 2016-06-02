@@ -73,7 +73,7 @@ If set/leave chinese-font-size to nil, it will follow english-font-size"
 
 (if window-system
     (synelics/set-fonts
-     '("Consolas" "Inconsolata" "DejaVu Sans Mono" "Monospace" "Courier New") ":pixelsize=18"
+     '("Consolas" "Inconsolata" "DejaVu Sans Mono" "Monospace" "Courier New") ":pixelsize=19"
      '("Microsoft Yahei" "文泉驿等宽微米黑" "黑体" "新宋体" "宋体")))
 
 

@@ -23,6 +23,7 @@
 (global-set-key (kbd "C-M-_") 'undo-tree-redo)
 (global-set-key (kbd "M-?") 'comment-or-uncomment-region-or-line)
 (global-set-key (kbd "M-w") 'copy-selection-or-current-string)
+(global-set-key (kbd "C-w") 'kill-region-or-current-line)
 (global-set-key (kbd "C-M-w") 'del-current-string-and-paste)
 (global-set-key (kbd "C-M-d") 'del-current-string)
 (global-set-key (kbd "C-x f") 'find-file-in-project)
@@ -36,6 +37,7 @@
 (global-set-key (kbd "M-g") 'goto-line)
 (global-set-key (kbd "C-M-;") 'highlight-symbol)
 (global-set-key (kbd "C-M-'") 'highlight-symbol-occur)
+(global-set-key (kbd "C-M-.") 'find-tag)
 (global-set-key (kbd "C-x k") (lambda ()
                                 (interactive)
                                 (kill-buffer)))
@@ -116,6 +118,7 @@
 (defvar ido-cur-item nil)
 (defvar ido-default-item nil)
 (defvar ido-cur-list nil)
+(global-flex-isearch-mode t)
 
 ;;; Line number
 (global-linum-mode 1)
@@ -161,7 +164,7 @@
   (interactive)
   (shell-command (concat "bash " (car (Synelics/uppest-git-directory)) "gen-tags.sh")))
 
-(defun Synelics/find-tag ()
+(defun synelics/find-tag ()
   "Find tag without confirm."
   (interactive)
   (let* ((begin-and-end-cons (begin-and-end-point-cons-of-current-string))
@@ -223,6 +226,17 @@
       (setq beg (region-beginning) end (region-end))
     (setq beg (car (begin-and-end-point-cons-of-current-string)) end (cdr (begin-and-end-point-cons-of-current-string))))
   (copy-region-as-kill beg end))
+
+(defun kill-region-or-current-line ()
+  (interactive)
+  (if (not (region-active-p))
+      (progn
+        (beginning-of-line)
+        (cua-set-mark)
+        (end-of-line)
+        (next-line)
+        (beginning-of-line)))
+  (kill-region (region-beginning) (region-end)))
 
 (defun del-current-string-and-paste ()
   (interactive)

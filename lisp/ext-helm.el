@@ -52,5 +52,5 @@
 (global-set-key (kbd "C-M-y") 'helm-show-kill-ring)
 (global-set-key (kbd "C-M-s") 'synelics/helm-search)
 
-(provide 'init-helm)
-;;; init-helm ends here
+(provide 'ext-helm)
+;;; ext-helm.el ends here

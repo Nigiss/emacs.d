@@ -151,10 +151,12 @@
 ;; Locales (setting them earlier in this file doesn't work in X)
 ;;----------------------------------------------------------------------------
 
-(require 'init-helm)
-(require 'init-web)
-(require 'init-w3m)
 (require 'init-locales)
+
+(require 'ext-helm)
+(require 'ext-web)
+(require 'ext-javascript)
+(require 'ext-python)
 
 (add-hook 'after-init-hook
           (lambda ()
@@ -167,4 +169,4 @@
 ;; Local Variables:
 ;; coding: utf-8
 ;; no-byte-compile: t
-;; End:
+;;; init.el ends here

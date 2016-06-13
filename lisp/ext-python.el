@@ -3,13 +3,13 @@
 ;;; Code:
 
 (require-package 'anaconda-mode)
-(require-package 'company)
 (require-package 'company-anaconda)
 
 (require 'anaconda-mode)
 
 (add-hook 'python-mode-hook 'anaconda-mode)
 (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
+(add-hook 'python-mode-hook 'company-mode)
 
 ;;; Override old key bindings
 (substitute-key-definition 'anaconda-mode-go-back 'anaconda-mode-show-doc anaconda-mode-map)

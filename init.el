@@ -153,6 +153,7 @@
 
 (require 'init-locales)
 
+(require 'ext-company)
 (require 'ext-helm)
 (require 'ext-web)
 (require 'ext-javascript)

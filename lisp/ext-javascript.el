@@ -4,7 +4,7 @@
 
 (require 'js2-mode)
 
-(setq-default sgml-basic-offset 4)
+(setq-default js2-basic-offset 4)
 
 (define-key js2-mode-map (kbd "M-.") 'synelics/js-goto-definition)
 

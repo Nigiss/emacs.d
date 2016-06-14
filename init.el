@@ -154,8 +154,11 @@
 
 (require 'init-locales)
 
+(require 'ext-ido)
 (require 'ext-company)
 (require 'ext-helm)
+
+;;; Programming
 (require 'ext-web)
 (require 'ext-javascript)
 (require 'ext-python)

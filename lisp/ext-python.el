@@ -9,7 +9,7 @@
 
 (add-hook 'python-mode-hook 'anaconda-mode)
 (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
-(add-hook 'python-mode-hook 'company-mode)
+(add-hook 'python-mode-hook 'company-anaconda)
 
 ;;; Override old key bindings
 (substitute-key-definition 'anaconda-mode-go-back 'anaconda-mode-show-doc anaconda-mode-map)

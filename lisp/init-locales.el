@@ -38,6 +38,9 @@
 (global-set-key (kbd "C-M-;") 'highlight-symbol)
 (global-set-key (kbd "C-M-'") 'highlight-symbol-occur)
 (global-set-key (kbd "C-M-.") 'find-tag)
+(require-package 'evil)
+(global-set-key (kbd "C-x C-q") 'evil-mode)
+(global-set-key (kbd "C-x C-m") 'smex)
 (global-set-key (kbd "C-x k") (lambda ()
                                 (interactive)
                                 (kill-buffer)))
@@ -112,7 +115,7 @@
 ;;; Tags table
 ;; (setq tags-table-list
 ;;       '("~/webroot/phone-v2"))
-(setq tags-file-name "~/webroot/phone-v2/TAGS")
+;; (setq tags-file-name "~/webroot/phone-v2/TAGS")
 (setq tags-revert-without-query 1)
 
 (defvar ido-cur-item nil)

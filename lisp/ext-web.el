@@ -18,9 +18,5 @@
                          (string-equal (file-name-extension (buffer-file-name)) "tpl")
                          (shell-command (concat "~/browser-fe/common/build/tpl.py " buffer-file-name " > /dev/null")))))))
 
-
-
-;; (add-hook 'after-save-hook 'Synelics/update-tags-table)
-
 (provide 'ext-web)
 ;;; ext-web.el ends here

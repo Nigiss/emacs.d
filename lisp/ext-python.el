@@ -7,9 +7,9 @@
 
 (require 'anaconda-mode)
 
-(add-hook 'python-mode-hook 'anaconda-mode)
-(add-hook 'python-mode-hook 'anaconda-eldoc-mode)
 (add-hook 'python-mode-hook 'company-anaconda)
+(add-hook 'python-mode-hook 'anaconda-eldoc-mode)
+(add-hook 'python-mode-hook 'anaconda-mode)
 
 ;;; Override old key bindings
 (substitute-key-definition 'anaconda-mode-go-back 'anaconda-mode-show-doc anaconda-mode-map)
@@ -17,6 +17,7 @@
 (substitute-key-definition 'anaconda-mode-find-definitions 'synelics/py-goto-definition anaconda-mode-map)
 (substitute-key-definition 'anaconda-mode-show-doc 'comment-or-uncomment-region-or-line anaconda-mode-map)
 
+;;; Custom def
 (defun synelics/py-goto-definition ()
   "Find definition first, then assignment, if failed, last use TAGS."
   (interactive)

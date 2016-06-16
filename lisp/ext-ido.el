@@ -4,11 +4,16 @@
 
 (require-package 'ido-vertical-mode)
 (require-package 'ido-at-point)
+(require 'ido-vertical-mode)
+(require 'ido-at-point)
 
 (ido-vertical-mode t)
 (ido-at-point-mode t)
 
 ;;; Use ido mode to find files in git repo
+(require-package 'find-file-in-project)
+(require 'find-file-in-project)
+
 (setq ffip-prefer-ido-mode t)
 
 ;; ;;; Key bindings for ido-mode

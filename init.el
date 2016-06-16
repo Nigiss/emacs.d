@@ -155,12 +155,15 @@
 (require 'init-locales)
 
 (require 'ext-ido)
-(require 'ext-company)
 (require 'ext-helm)
+(require 'ext-fonts)
+(require 'ext-dired)
+(require 'ext-company)
 
 ;;; Programming
-(require 'ext-web)
-(require 'ext-javascript)
+(require 'ext-js)
+(require 'ext-css)
+(require 'ext-html)
 (require 'ext-python)
 
 (add-hook 'after-init-hook

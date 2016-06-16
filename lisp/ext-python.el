@@ -5,11 +5,34 @@
 (require-package 'anaconda-mode)
 (require-package 'company-anaconda)
 
+(require 'company)
 (require 'anaconda-mode)
+(require 'company-anaconda)
 
-(add-hook 'python-mode-hook 'company-anaconda)
-(add-hook 'python-mode-hook 'anaconda-eldoc-mode)
-(add-hook 'python-mode-hook 'anaconda-mode)
+;; (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
+;; (add-hook 'python-mode-hook 'anaconda-mode)
+
+(add-hook 'python-mode-hook
+          (lambda ()
+            ;;; Advanced minor mode
+            (anaconda-eldoc-mode)
+            (anaconda-mode)
+
+            ;;; Remove default completion
+            (remove-hook 'completion-at-point-functions
+                         #'python-completion-complete-at-point 'local)
+
+            ;;; Config complete backend
+            (add-to-list 'company-backends 'company-anaconda)))
+
+;; (add-hook 'after-change-major-mode-hook
+;;           (lambda ()
+;;             (print major-mode)
+;;             (print (eq major-mode 'python-mode))
+;;             ;; (unless (eq major-mode 'python-mode)
+;;             ;;   (delete 'company-anaconda company-backends))
+;;             ))
+
 
 ;;; Override old key bindings
 (substitute-key-definition 'anaconda-mode-go-back 'anaconda-mode-show-doc anaconda-mode-map)

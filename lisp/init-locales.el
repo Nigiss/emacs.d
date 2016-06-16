@@ -64,6 +64,7 @@
 (global-set-key (kbd "C-x l a") (lambda ()
                                   (interactive)
                                   (ansi-term "/bin/zsh")))
+
 (add-hook 'emacs-lisp-mode-hook
           (lambda ()
             (local-set-key (kbd "C-x l r")
@@ -77,6 +78,9 @@
 (highlight-symbol-mode -1)
 (global-auto-revert-mode 1)
 (auto-save-mode nil)
+
+;;; Auto update pkgs
+(require-package 'auto-package-update)
 
 ;;; Gc freq
 (setq gc-cons-threshold (* 1024 1024 1024))

@@ -156,8 +156,9 @@
 
 (require 'ext-ido)
 (require 'ext-helm)
-(require 'ext-fonts)
 (require 'ext-dired)
+(require 'ext-fonts)
+(require 'ext-shell)
 (require 'ext-company)
 
 ;;; Programming

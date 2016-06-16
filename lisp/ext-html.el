@@ -12,7 +12,6 @@
 (define-key html-mode-map (kbd "M-.") 'synelics/find-tag)
 (add-hook 'html-mode-hook
           (lambda ()
-            (add-to-list 'company-backends 'company-web-html)
             (add-hook 'after-save-hook
                       (lambda ()
                         (and

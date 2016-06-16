@@ -155,21 +155,22 @@
   (kill-emacs))
 
 
-(defun Synelics/uppest-git-directory ()
+(defun synelics/uppest-git-directory ()
   "Get the uppest git directory name."
-  (let* ((base-dir (file-name-directory (buffer-file-name)))
-         (home-dir (substring base-dir (string-match "\/.*?\/.*?\/" base-dir) (match-end 0))))
-    (do ((curr-dir base-dir (substring curr-dir (string-match "\/.*\/" (substring curr-dir 0 -1)) (match-end 0))))
-        ((equal nil (string-match "/home/.*?/" curr-dir)))
-      (if (> (list-length (directory-files curr-dir nil ".*\.git$")) 0)
-          (progn
-            (setq home-dir curr-dir)
-            (return (list home-dir)))))))
+  (if buffer-file-name
+      (let* ((base-dir (file-name-directory buffer-file-name))
+             (home-dir (substring base-dir (string-match "\/.*?\/.*?\/" base-dir) (match-end 0))))
+        (do ((curr-dir base-dir (substring curr-dir (string-match "\/.*\/" (substring curr-dir 0 -1)) (match-end 0))))
+            ((equal nil (string-match "/home/.*?/" curr-dir)))
+          (if (> (list-length (directory-files curr-dir nil ".*\.git$")) 0)
+              (progn
+                (setq home-dir curr-dir)
+                (return (list home-dir))))))))
 
 (defun Synelics/update-tags-table ()
   "Update TAGS table."
   (interactive)
-  (shell-command (concat "bash " (car (Synelics/uppest-git-directory)) "gen-tags.sh")))
+  (shell-command (concat "bash " (car (synelics/uppest-git-directory)) "gen-tags.sh")))
 
 (defun synelics/find-tag ()
   "Find tag without confirm."

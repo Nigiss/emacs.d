@@ -24,7 +24,7 @@
 
 (defun synelics/helm-rgrep ()
   (interactive)
-  (helm-do-grep-1 (Synelics/uppest-git-directory)
+  (helm-do-grep-1 (synelics/uppest-git-directory)
                   :recursive
                   nil
                   '("*.js" "*.css" "*.tpl" "*.py" "*.el")

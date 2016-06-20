@@ -296,6 +296,10 @@
   (local-set-key (kbd "n") 'forward-button)
   (local-set-key (kbd "p") 'backward-button))
 
+(defmacro synelics/remove-from-list (list-var element)
+  "Remove element from list."
+  `(setq ,list-var (delete ,element ,list-var)))
+
 (add-hook 'Info-mode-hook 'info-config)
 (add-hook 'help-mode-hook 'info-config)
 

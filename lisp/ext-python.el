@@ -5,12 +5,8 @@
 (require-package 'anaconda-mode)
 (require-package 'company-anaconda)
 
-(require 'company)
+(require 'python)
 (require 'anaconda-mode)
-(require 'company-anaconda)
-
-;; (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
-;; (add-hook 'python-mode-hook 'anaconda-mode)
 
 (add-hook 'python-mode-hook
           (lambda ()
@@ -20,19 +16,11 @@
 
             ;;; Remove default completion
             (remove-hook 'completion-at-point-functions
-                         #'python-completion-complete-at-point 'local)
+                         #'python-completion-complete-at-point 'local)))
 
-            ;;; Config complete backend
-            (add-to-list 'company-backends 'company-anaconda)))
-
-;; (add-hook 'after-change-major-mode-hook
-;;           (lambda ()
-;;             (print major-mode)
-;;             (print (eq major-mode 'python-mode))
-;;             ;; (unless (eq major-mode 'python-mode)
-;;             ;;   (delete 'company-anaconda company-backends))
-;;             ))
-
+(require 'ext-company)
+(require 'company-anaconda)
+(synelics/company-add-backend 'python-mode 'company-anaconda)
 
 ;;; Override old key bindings
 (substitute-key-definition 'anaconda-mode-go-back 'anaconda-mode-show-doc anaconda-mode-map)

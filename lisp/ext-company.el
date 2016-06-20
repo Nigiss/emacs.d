@@ -15,7 +15,23 @@
 (define-key company-active-map (kbd "C-n") 'company-select-next)
 (define-key company-active-map (kbd "C-p") 'company-select-previous)
 
-(add-to-list 'completion-at-point-functions 'synelics/ido-company 'append)
+;;; Config default backends
+(require 'company-etags)
+(setq company-etags-everywhere t)
+(add-hook 'company-mode-hook
+          (lambda ()
+            (setq company-backends '(company-etags))))
+
+(defmacro synelics/company-add-backend (specific-mode added-backend)
+  "Add backend for SPECIFIC-MODE.ADDED-BACKEND is company backend."
+  `(add-hook 'window-configuration-change-hook
+             (lambda ()
+               (if (eq major-mode ,specific-mode)
+                   (add-to-list 'company-backends ,added-backend)
+                 (synelics/remove-from-list company-backends ,added-backend)))))
+
+;;; Config TAB complete func
+(add-to-list 'completion-at-point-functions 'synelics/ido-company)
 
 (defun synelics/ido-company ()
   "Select `company-complete' candidates by `ido'."

@@ -2,18 +2,28 @@
 ;;; Commentary:
 ;;; Code:
 
+(require-package 'ac-js2)
 (require-package 'js2-refactor)
 
 (require 'js2-mode)
+(require 'ac-js2)
 (require 'js2-refactor)
+(require 'ext-company)
 
 (add-hook 'js2-mode-hook
           (lambda ()
+            (ac-js2-mode)
+            (setq completion-at-point-functions (delete 'ac-js2-completion-function completion-at-point-functions))
+
             (js2-refactor-mode)
             (js2r-add-keybindings-with-prefix "C-c C-m")))
 
+(synelics/company-add-backend 'js2-mode 'ac-js2-company)
+
 ;;; Key bindings
-(define-key js2-mode-map (kbd "M-.") 'synelics/js-goto-definition)
+(substitute-key-definition 'ac-js2-jump-to-definition
+                           'synelics/js-goto-definition
+                           js2-mode-map)
 
 (setq-default js2-basic-offset 4)
 

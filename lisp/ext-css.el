@@ -2,12 +2,11 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'company)
 (require 'css-mode)
+(require 'company-css)
+(require 'ext-company)
 
-(add-hook 'css-mode-hook
-          (lambda ()
-            (add-to-list 'company-backends 'company-css)))
+(synelics/company-add-backend 'css-mode 'company-css)
 
 (setq-default css-indent-offset 4)
 

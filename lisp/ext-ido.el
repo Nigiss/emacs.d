@@ -48,5 +48,14 @@
                                      nil require-match initial-input hist def))
         ad-do-it))))
 
+(global-set-key (kbd "C-M-y") 'sylc/read-kill-ring)
+
+(setf kill-ring-max 10000)
+
+(defun sylc/read-kill-ring ()
+  "Read `kill-ring in `ido-mode."
+  (interactive)
+  (ido-completing-read "Prompt: " kill-ring))
+
 (provide 'ext-ido)
 ;;; ext-ido.el ends here

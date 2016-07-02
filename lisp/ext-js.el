@@ -10,30 +10,32 @@
 (require 'js2-refactor)
 (require 'ext-company)
 
-(add-hook 'js2-mode-hook
-          (lambda ()
-            (ac-js2-mode)
-            (setq completion-at-point-functions (delete 'ac-js2-completion-function completion-at-point-functions))
+(sylc/base-exec-for-hook 'js2-mode-hook
+                         (ac-js2-mode)
+                         (synelics/remove-from-list completion-at-point-functions 'ac-js2-completion-function)
 
-            (js2-refactor-mode)
-            (js2r-add-keybindings-with-prefix "C-c C-m")))
+                         (js2-refactor-mode)
+                         (js2r-add-keybindings-with-prefix "C-c C-m"))
+
+
+;;; Key bindings overlay
+(sylc/base-exec-for-hook 'ac-js2-mode-hook
+                         (define-key ac-js2-mode-map (kbd "M-.") 'sylc/js-goto-definition))
 
 (synelics/company-add-backend 'js2-mode 'ac-js2-company)
 
-;;; Key bindings
-(substitute-key-definition 'ac-js2-jump-to-definition
-                           'synelics/js-goto-definition
-                           js2-mode-map)
-
 (setq-default js2-basic-offset 4)
 
-(defun synelics/js-goto-definition ()
+(defun sylc/js-goto-definition ()
   "Use default first, if failed, then use TAGS."
   (interactive)
   (condition-case nil
-      (js2-jump-to-definition)
+      (ac-js2-jump-to-definition)
     (error
-     (synelics/find-tag))))
+     (condition-case nil
+         (js2-jump-to-definition)
+       (error
+        (synelics/find-tag))))))
 
 (provide 'ext-js)
 ;;; ext-js.el ends here

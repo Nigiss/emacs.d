@@ -24,7 +24,7 @@
 
 (defun synelics/helm-rgrep ()
   (interactive)
-  (helm-do-grep-1 (synelics/uppest-git-directory)
+  (helm-do-grep-1 `(,(sylc/uppest-git-directory))
                   :recursive
                   nil
                   '("*.js" "*.css" "*.tpl" "*.py" "*.el")
@@ -50,7 +50,7 @@
 ;; (global-set-key (kbd "C-x C-p") 'helm-projects-find-files)
 ;; (global-set-key (kbd "C-x C-b") 'helm-multi-files)
 (global-set-key (kbd "C-M-y") 'helm-show-kill-ring)
-(global-set-key (kbd "C-M-s") 'synelics/helm-search)
+;; (global-set-key (kbd "C-M-s") 'synelics/helm-search)
 
 (provide 'ext-helm)
 ;;; ext-helm.el ends here

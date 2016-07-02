@@ -167,6 +167,9 @@
 (require 'ext-html)
 (require 'ext-python)
 
+;;; DK Work
+(require 'ext-work)
+
 (add-hook 'after-init-hook
           (lambda ()
             (message "init completed in %.2fms"

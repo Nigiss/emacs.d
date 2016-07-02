@@ -20,6 +20,7 @@
 (setq company-etags-everywhere t)
 (add-hook 'company-mode-hook
           (lambda ()
+            (define-key company-mode-map (kbd "M-/") 'undo-tree-redo)
             (setq company-backends '(company-etags))))
 
 (defmacro synelics/company-add-backend (specific-mode added-backend)

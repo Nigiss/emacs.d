@@ -18,9 +18,79 @@
   (prefer-coding-system 'utf-8))
 
 ;;; My configurations
+(defvar sylc/base--key-prefix "")
+(defvar sylc/base--key-prefix-local "")
+
+(defmacro sylc/base-exec-for-hook (hook &rest body)
+  `(add-hook ,hook
+             #'(lambda ()
+                 ,@body)
+             'local))
+
+;;; Test
+;; (sylc/base-exec-for-hook 'css-mode-hook
+;;                     (message "TEST ==> %s" 1)
+;;                     (message "TEST ==> %s" 2))
+
+(defun sylc/base-set-key-prefix (key-prefix &optional local)
+  (if local
+      (setf sylc/base--key-prefix-local key-prefix)
+    (global-unset-key (kbd key-prefix))
+    (setf sylc/base--key-prefix key-prefix)))
+
+(defun sylc/base-add-keybinding (keybinding fn &optional local)
+  (let ((set-key-fn 'global-set-key))
+    (if local
+        (setf set-key-fn 'local-set-key))
+    (funcall set-key-fn
+             (kbd (concat sylc/base--key-prefix
+                          (if local
+                              (concat " " sylc/base--key-prefix-local)
+                            "")
+                          keybinding))
+             fn)))
+
+(sylc/base-set-key-prefix "C-l ")
+(sylc/base-set-key-prefix "cm" 'local)
+
+(sylc/base-add-keybinding "cu" 'Synelics/upcase-char)
+(sylc/base-add-keybinding "cd" 'Synelics/downcase-char)
+
+(sylc/base-add-keybinding "pl" 'package-list-packages)
+(sylc/base-add-keybinding "pi" 'package-install)
+
+(sylc/base-add-keybinding "tc" 'sylc/base-generate-tags-table)
+(sylc/base-add-keybinding "tv" 'visit-tags-table)
+(sylc/base-add-keybinding "tr" 'tags-reset-tags-tables)
+
+(sylc/base-add-keybinding "ma" 'mc/mark-all-symbols-like-this)
+
+(sylc/base-add-keybinding "fr" (lambda ()
+                                 (interactive)
+                                 (revert-buffer t t)))
+
+(sylc/base-add-keybinding "sa" (lambda ()
+                                 (interactive)
+                                 (ansi-term "/bin/zsh")))
+
+(sylc/base-add-keybinding "se" 'eshell)
+(sylc/base-add-keybinding "ss" 'shell)
+
+(sylc/base-exec-for-hook 'emacs-lisp-mode-hook
+                         (sylc/base-add-keybinding "r"
+                                                   (lambda ()
+                                                     "Update current el config."
+                                                     (interactive)
+                                                     (save-buffer)
+                                                     (load-file buffer-file-name))
+                                                   'local))
+
+(sylc/base-exec-for-hook 'paredit-mode-hook
+                         (define-key paredit-mode-map (kbd "C-j") 'ace-jump-mode)
+                         (define-key paredit-mode-map (kbd "C-o") 'previous-line-end-and-newline-and-indent))
 
 ;;; Golbal key bindings
-(global-set-key (kbd "C-M-_") 'undo-tree-redo)
+(global-set-key (kbd "M-/") 'undo-tree-redo)
 (global-set-key (kbd "M-?") 'comment-or-uncomment-region-or-line)
 (global-set-key (kbd "M-w") 'copy-selection-or-current-string)
 (global-set-key (kbd "C-w") 'kill-region-or-current-line)
@@ -28,50 +98,25 @@
 (global-set-key (kbd "C-M-d") 'del-current-string)
 (global-set-key (kbd "C-x f") 'find-file-in-project)
 (global-set-key (kbd "M-k") 'copy-current-line)
-(global-set-key (kbd "C-M-j") 'next-line-beginning-and-newline-and-indent)
-(global-set-key (kbd "C-j") 'previous-line-end-and-newline-and-indent)
+(global-set-key (kbd "C-j") 'ace-jump-mode)
+(global-set-key (kbd "C-o") 'previous-line-end-and-newline-and-indent)
+(global-set-key (kbd "C-M-o") 'next-line-beginning-and-newline-and-indent)
 (global-set-key (kbd "C-a") 'back-to-indentation-or-beginning)
 (global-set-key (kbd "M-,") 'pop-tag-mark)
 (global-set-key (kbd "M-'") 'synelics/helm-rgrep)
 (global-set-key (kbd "C-;") 'eval-expression)
 (global-set-key (kbd "M-g") 'goto-line)
+(global-set-key (kbd "C-M-s") 'paredit-splice-sexp)
 (global-set-key (kbd "C-M-;") 'highlight-symbol)
 (global-set-key (kbd "C-M-'") 'highlight-symbol-occur)
 (global-set-key (kbd "C-M-.") 'find-tag)
 (require-package 'evil)
 (global-set-key (kbd "C-x C-q") 'evil-mode)
+(global-set-key (kbd "C-x l") 'recenter-top-bottom)
 (global-set-key (kbd "C-x C-m") 'smex)
 (global-set-key (kbd "C-x k") (lambda ()
                                 (interactive)
                                 (kill-buffer)))
-
-;;; Custom
-(global-unset-key (kbd "C-x l"))
-(global-set-key (kbd "C-x l u") 'Synelics/upcase-char)
-(global-set-key (kbd "C-x l d") 'Synelics/downcase-char)
-(global-set-key (kbd "C-x l l") 'package-list-packages)
-(global-set-key (kbd "C-x l i") 'package-install)
-(global-set-key (kbd "C-x l p") 'switch-to-prev-buffer)
-(global-set-key (kbd "C-x l n") 'switch-to-next-buffer)
-(global-set-key (kbd "C-x l v") 'visit-tags-table)
-(global-set-key (kbd "C-x l t") 'Synelics/update-tags-table)
-(global-set-key (kbd "C-x l m") 'mc/mark-all-symbols-like-this)
-(global-set-key (kbd "C-x l f") (lambda ()
-                                  (interactive)
-                                  (revert-buffer t t)))
-(global-set-key (kbd "C-x l j") 'ace-jump-mode)
-(global-set-key (kbd "C-x l e") 'shell)
-(global-set-key (kbd "C-x l a") (lambda ()
-                                  (interactive)
-                                  (ansi-term "/bin/zsh")))
-
-(add-hook 'emacs-lisp-mode-hook
-          (lambda ()
-            (local-set-key (kbd "C-x l r")
-                           (lambda ()
-                             (interactive)
-                             (save-buffer)
-                             (load-file buffer-file-name)))))
 
 ;;; Global settings
 (menu-bar-mode -1)
@@ -148,14 +193,13 @@
 ;;; Revert buffer
 (global-auto-revert-mode 1)
 
-:; General function
+;;; General function
 (defun Synelics/server-shutdown ()
   "Save buffers, Quit, and Shutdown (kill) server"
   (interactive)
   (kill-emacs))
 
-
-(defun synelics/uppest-git-directory ()
+(defun sylc/uppest-git-directory ()
   "Get the uppest git directory name."
   (if buffer-file-name
       (let* ((base-dir (file-name-directory buffer-file-name))
@@ -165,12 +209,26 @@
           (if (> (list-length (directory-files curr-dir nil ".*\.git$")) 0)
               (progn
                 (setq home-dir curr-dir)
-                (return (list home-dir))))))))
+                (return home-dir)))))
+    (car (cdr (split-string (pwd))))))
 
-(defun Synelics/update-tags-table ()
-  "Update TAGS table."
+(defun sylc/base--project-file (file-name)
+  (concat (sylc/uppest-git-directory) file-name))
+
+(defun sylc/base--project-generate-tags-sh ()
+  (sylc/base--project-file "gen-tags.sh"))
+
+(defun sylc/base--project-tags-file ()
+  (sylc/base--project-file "TAGS"))
+
+(defun sylc/base-generate-tags-table ()
+  "update tags table."
   (interactive)
-  (shell-command (concat "bash " (car (synelics/uppest-git-directory)) "gen-tags.sh")))
+  (shell-command (concat "bash " (sylc/base--project-generate-tags-sh))))
+
+(defun sylc/base--tags-table-exists-p ()
+  "Update tags table."
+  (file-exists-p (sylc/base--project-tags-file)))
 
 (defun synelics/find-tag ()
   "Find tag without confirm."
@@ -178,7 +236,13 @@
   (let* ((begin-and-end-cons (begin-and-end-point-cons-of-current-string))
          (begin (car begin-and-end-cons))
          (end (cdr begin-and-end-cons)))
-    (find-tag (buffer-substring-no-properties begin end))))
+
+    (unless (sylc/base--tags-table-exists-p)
+      (sylc/base-generate-tags-table))
+    (visit-tags-table (sylc/base--project-tags-file) 'local)
+
+    (find-tag (buffer-substring-no-properties begin end))
+    ))
 
 (defun Synelics/upcase-char ()
   "Upcase current char and forward."

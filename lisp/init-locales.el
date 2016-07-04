@@ -170,7 +170,6 @@
 (defvar ido-cur-item nil)
 (defvar ido-default-item nil)
 (defvar ido-cur-list nil)
-(global-flex-isearch-mode t)
 
 ;;; Line number
 (global-linum-mode 1)

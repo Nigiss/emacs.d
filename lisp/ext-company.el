@@ -21,7 +21,7 @@
 (add-hook 'company-mode-hook
           (lambda ()
             (define-key company-mode-map (kbd "M-/") 'undo-tree-redo)
-            (setq company-backends '(company-etags))))
+            (add-to-list 'company-backends 'company-etags)))
 
 (defmacro synelics/company-add-backend (specific-mode added-backend)
   "Add backend for SPECIFIC-MODE.ADDED-BACKEND is company backend."

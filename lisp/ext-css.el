@@ -6,7 +6,10 @@
 (require 'company-css)
 (require 'ext-company)
 
-(synelics/company-add-backend 'css-mode 'company-css)
+(after-load 'css-mode
+  (after-load 'company
+    (add-hook 'css-mode-hook
+              (lambda () (sanityinc/local-push-company-backend 'company-css)))))
 
 (setq-default css-indent-offset 4)
 

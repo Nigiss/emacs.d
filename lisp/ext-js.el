@@ -22,7 +22,10 @@
 (sylc/base-exec-for-hook 'ac-js2-mode-hook
                          (define-key ac-js2-mode-map (kbd "M-.") 'sylc/js-goto-definition))
 
-(synelics/company-add-backend 'js2-mode 'ac-js2-company)
+(after-load 'js2-mode
+  (after-load 'company
+    (add-hook 'js2-mode-hook
+              (lambda () (sanityinc/local-push-company-backend 'ac-js2-company)))))
 
 (setq-default js2-basic-offset 4)
 

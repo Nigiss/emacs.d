@@ -86,7 +86,7 @@
                                                    'local))
 
 (sylc/base-exec-for-hook 'paredit-mode-hook
-                         (define-key paredit-mode-map (kbd "C-j") 'ace-jump-mode)
+                         (define-key paredit-mode-map (kbd "C-j") 'ace-jump-word-mode)
                          (define-key paredit-mode-map (kbd "C-o") 'previous-line-end-and-newline-and-indent))
 
 ;;; Golbal key bindings
@@ -98,7 +98,7 @@
 (global-set-key (kbd "C-M-d") 'del-current-string)
 (global-set-key (kbd "C-x f") 'find-file-in-project)
 (global-set-key (kbd "M-k") 'copy-current-line)
-(global-set-key (kbd "C-j") 'ace-jump-mode)
+(global-set-key (kbd "C-j") 'ace-jump-word-mode)
 (global-set-key (kbd "C-o") 'previous-line-end-and-newline-and-indent)
 (global-set-key (kbd "C-M-o") 'next-line-beginning-and-newline-and-indent)
 (global-set-key (kbd "C-a") 'back-to-indentation-or-beginning)
@@ -128,7 +128,7 @@
 (require-package 'auto-package-update)
 
 ;;; Gc freq
-(setq gc-cons-threshold (* 1024 1024 1024))
+(setq gc-cons-threshold (* 512 1024 1024))
 
 ;;; Window switch
 (require-package 'window-numbering)
@@ -139,24 +139,24 @@
 (load-theme 'molokai)
 
 ;;; Neo tree
-(require-package 'neotree)
-(add-hook 'neotree-mode-hook
-          (lambda ()
-            (local-set-key (kbd "j") 'next-line)
-            (local-set-key (kbd "k") 'previous-line)
-            (local-set-key (kbd "o") 'neotree-enter)
-            (local-set-key (kbd "u") 'neotree-select-up-node)
-            (local-set-key (kbd "c") 'neotree-create-node)
-            (local-set-key (kbd "d") 'neotree-delete-node)
-            (local-set-key (kbd "r") 'neotree-rename-node)
-            (local-set-key (kbd "i") 'neotree-change-root)
-            (local-set-key (kbd "n") 'neotree-select-next-sibling-node)
-            (local-set-key (kbd "p") 'neotree-projectile-action)))
+;; (require-package 'neotree)
+;; (add-hook 'neotree-mode-hook
+;;           (lambda ()
+;;             (local-set-key (kbd "j") 'next-line)
+;;             (local-set-key (kbd "k") 'previous-line)
+;;             (local-set-key (kbd "o") 'neotree-enter)
+;;             (local-set-key (kbd "u") 'neotree-select-up-node)
+;;             (local-set-key (kbd "c") 'neotree-create-node)
+;;             (local-set-key (kbd "d") 'neotree-delete-node)
+;;             (local-set-key (kbd "r") 'neotree-rename-node)
+;;             (local-set-key (kbd "i") 'neotree-change-root)
+;;             (local-set-key (kbd "n") 'neotree-select-next-sibling-node)
+;;             (local-set-key (kbd "p") 'neotree-projectile-action)))
 
 ;;; Smooth scrolling
-(require-package 'smooth-scrolling)
-(smooth-scrolling-mode t)
-(setq smooth-scroll-margin 1)
+;; (require-package 'smooth-scrolling)
+;; (smooth-scrolling-mode t)
+;; (setq smooth-scroll-margin 1)
 
 ;;; YASnippet
 (yas-global-mode t)
@@ -165,11 +165,12 @@
 ;; (setq tags-table-list
 ;;       '("~/webroot/phone-v2"))
 ;; (setq tags-file-name "~/webroot/phone-v2/TAGS")
-(setq tags-revert-without-query 1)
+;; (setq tags-revert-without-query 1)
 
-(defvar ido-cur-item nil)
-(defvar ido-default-item nil)
-(defvar ido-cur-list nil)
+;;; Ido mode
+;; (defvar ido-cur-item nil)
+;; (defvar ido-default-item nil)
+;; (defvar ido-cur-list nil)
 
 ;;; Line number
 (global-linum-mode 1)
@@ -189,15 +190,7 @@
       display-time-format "%H:%M %a")
 (display-time-mode 1)
 
-;;; Revert buffer
-(global-auto-revert-mode 1)
-
 ;;; General function
-(defun Synelics/server-shutdown ()
-  "Save buffers, Quit, and Shutdown (kill) server"
-  (interactive)
-  (kill-emacs))
-
 (defun sylc/uppest-git-directory ()
   "Get the uppest git directory name."
   (if buffer-file-name
@@ -353,17 +346,8 @@
   (if (= (point) (progn (back-to-indentation) (point)))
       (beginning-of-line)))
 
-(defun info-config ()
-  (local-set-key (kbd "j") 'scroll-up-line)
-  (local-set-key (kbd "k") 'scroll-down-line)
-  (local-set-key (kbd "n") 'forward-button)
-  (local-set-key (kbd "p") 'backward-button))
-
 (defmacro synelics/remove-from-list (list-var element)
   "Remove element from list."
   `(setq ,list-var (delete ,element ,list-var)))
-
-(add-hook 'Info-mode-hook 'info-config)
-(add-hook 'help-mode-hook 'info-config)
 
 (provide 'init-locales)

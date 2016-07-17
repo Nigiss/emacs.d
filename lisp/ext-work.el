@@ -19,8 +19,8 @@
           (lambda (string)
             (cl-loop for (replace-regexp ansi-color-code)
                      in '(("SUCCESS" "47")
-                          (".*FAILED$" "197")
-                          (".*Error: .*" "243"))
+                          (".*FAILED$" "208")
+                          (".*Error: .*" "197"))
                      do
                      (setf string
                            (sylc/work--karma-color-filter string
@@ -36,7 +36,7 @@
                             filter-string
                             'fixedcase))
 
-(defun sylc/work--custom-phone-key-bindings (args)
+(defun sylc/work--custom-phone-key-bindings ()
   "docstring"
   (cl-loop for (work-directory custom-key-set-fn) in
            '(("/home/vagrant/duokan/phone-v3/" 'sylc/work--custom-phone-key-bindings)

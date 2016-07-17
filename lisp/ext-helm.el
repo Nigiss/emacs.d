@@ -22,6 +22,8 @@
 (add-to-list 'helm-grep-ignored-directories "duokan")
 (add-to-list 'helm-grep-ignored-directories "dist*")
 
+(add-to-list 'helm-grep-ignored-files "index")
+
 (defun synelics/helm-rgrep ()
   (interactive)
   (helm-do-grep-1 `(,(sylc/uppest-git-directory))

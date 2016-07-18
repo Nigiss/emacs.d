@@ -127,6 +127,18 @@
 ;;; Auto update pkgs
 (require-package 'auto-package-update)
 
+;;; Dired
+(require-package 'dired-details)
+(require-package 'dired-details+)
+(require-package 'dired-single)
+(require-package 'dired+)
+
+;;; Powerline
+;; (require 'powerline)
+;; (setq powerline-arrow-shape 'arrow)   ;; the default
+;; (setq powerline-color1 "grey22")
+;; (setq powerline-color2 "grey40")
+
 ;;; Gc freq
 (setq gc-cons-threshold (* 512 1024 1024))
 

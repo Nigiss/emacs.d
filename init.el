@@ -155,6 +155,7 @@
 (require 'init-locales)
 
 (require 'ext-ido)
+(require 'ext-org)
 (require 'ext-helm)
 (require 'ext-dired)
 (require 'ext-fonts)

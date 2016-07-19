@@ -120,6 +120,9 @@
                                 (kill-buffer)))
 
 ;;; Global settings
+(setq mac-option-modifier 'meta)
+(setq mac-command-modifier 'super)
+
 (menu-bar-mode -1)
 (highlight-symbol-mode -1)
 (global-auto-revert-mode 1)

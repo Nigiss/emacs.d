@@ -22,10 +22,14 @@
 
 (require 'ext-company)
 (require 'company-anaconda)
-(after-load 'python-mode
-  (after-load 'company
-    (add-hook 'python-mode-hook
-              (lambda () (sanityinc/local-push-company-backend 'company-anaconda)))))
+
+;; (add-hook 'company-mode-hook
+;;           (add-to-list 'company-backends 'company-anaconda))
+
+;; (after-load 'python-mode
+;;   (after-load 'company
+;;     (add-hook 'python-mode-hook
+;;               (lambda () (sanityinc/local-push-company-backend 'company-anaconda)))))
 
 ;;; Override old key bindings
 (sylc/base-exec-for-hook 'anaconda-mode-hook

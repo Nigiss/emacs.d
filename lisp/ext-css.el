@@ -6,10 +6,13 @@
 (require 'company-css)
 (require 'ext-company)
 
-(after-load 'css-mode
-  (after-load 'company
-    (add-hook 'css-mode-hook
-              (lambda () (sanityinc/local-push-company-backend 'company-css)))))
+;; (add-hook 'company-mode-hook
+;;           (add-to-list 'company-backends 'company-css))
+
+;; (after-load 'css-mode
+;;   (after-load 'company
+;;     (add-hook 'css-mode-hook
+;;               (lambda () (sanityinc/local-push-company-backend 'company-css)))))
 
 (setq-default css-indent-offset 4)
 

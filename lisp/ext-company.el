@@ -22,7 +22,7 @@
           (lambda ()
             (define-key company-mode-map (kbd "M-/") 'undo-tree-redo)
             (setf company-etags-ignore-case t)
-            (setf company-backends '(company-etags (company-capf company-dabbrev-code) company-dabbrev))))
+            (setf company-backends '(ac-js2-company company-css company-anaconda company-etags (company-capf company-dabbrev-code) company-dabbrev))))
 
 (defmacro synelics/company-add-backend (specific-mode added-backend)
   "Add backend for SPECIFIC-MODE.ADDED-BACKEND is company backend."
@@ -40,9 +40,7 @@
   (interactive)
 
   ;;; Start complete
-  (let (
-        ;; Since company will auto complete common part
-        (complete-start-pos (point))
+  (let ((complete-start-pos (point))    ; Since company will auto complete common part
         candidate-prefix candidates)
 
     ;;; Company first

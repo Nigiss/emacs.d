@@ -156,6 +156,7 @@
 
 (require 'ext-ido)
 (require 'ext-org)
+(require 'ext-evil)
 (require 'ext-helm)
 (require 'ext-dired)
 (require 'ext-fonts)

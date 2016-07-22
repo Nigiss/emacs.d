@@ -99,6 +99,7 @@
 (global-set-key (kbd "C-x f") 'find-file-in-project)
 (global-set-key (kbd "M-k") 'copy-current-line)
 (global-set-key (kbd "C-j") 'ace-jump-word-mode)
+(global-set-key (kbd "C-x d") 'neotree-toggle)
 (global-set-key (kbd "C-o") 'previous-line-end-and-newline-and-indent)
 (global-set-key (kbd "C-M-o") 'next-line-beginning-and-newline-and-indent)
 (global-set-key (kbd "C-a") 'back-to-indentation-or-beginning)
@@ -150,20 +151,23 @@
 (require-package 'molokai-theme)
 (load-theme 'molokai)
 
+;; (require-package 'dracula-theme)
+;; (load-theme 'dracula)
+
 ;;; Neo tree
-;; (require-package 'neotree)
-;; (add-hook 'neotree-mode-hook
-;;           (lambda ()
-;;             (local-set-key (kbd "j") 'next-line)
-;;             (local-set-key (kbd "k") 'previous-line)
-;;             (local-set-key (kbd "o") 'neotree-enter)
-;;             (local-set-key (kbd "u") 'neotree-select-up-node)
-;;             (local-set-key (kbd "c") 'neotree-create-node)
-;;             (local-set-key (kbd "d") 'neotree-delete-node)
-;;             (local-set-key (kbd "r") 'neotree-rename-node)
-;;             (local-set-key (kbd "i") 'neotree-change-root)
-;;             (local-set-key (kbd "n") 'neotree-select-next-sibling-node)
-;;             (local-set-key (kbd "p") 'neotree-projectile-action)))
+(require-package 'neotree)
+(add-hook 'neotree-mode-hook
+          (lambda ()
+            (local-set-key (kbd "j") 'next-line)
+            (local-set-key (kbd "k") 'previous-line)
+            (local-set-key (kbd "o") 'neotree-enter)
+            (local-set-key (kbd "u") 'neotree-select-up-node)
+            (local-set-key (kbd "c") 'neotree-create-node)
+            (local-set-key (kbd "d") 'neotree-delete-node)
+            (local-set-key (kbd "r") 'neotree-rename-node)
+            (local-set-key (kbd "t") 'neotree-change-root)
+            (local-set-key (kbd "n") 'neotree-select-next-sibling-node)
+            (local-set-key (kbd "p") 'neotree-projectile-action)))
 
 ;;; Smooth scrolling
 ;; (require-package 'smooth-scrolling)
